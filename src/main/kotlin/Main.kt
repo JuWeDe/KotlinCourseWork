@@ -151,29 +151,29 @@ suspend fun main(args: Array<String>) {
     client.close()
 
 
-//    val sum = operateOnNumbers(10, 5) { x, y -> x + y }
-//    val multiply = operateOnNumbers(5, 2) { x, y -> x * y }
-//    val difference = operateOnNumbers(50, 30) { x, y -> x - y }
-//
-//    println("Sum: $sum")
-//    println("Multiply: $multiply")
-//    println("Difference: $difference")
+    val sum = operateOnNumbers(10, 5) { x, y -> x + y }
+    val multiply = operateOnNumbers(5, 2) { x, y -> x * y }
+    val difference = operateOnNumbers(50, 30) { x, y -> x - y }
+
+    println("Sum: $sum")
+    println("Multiply: $multiply")
+    println("Difference: $difference")
 
 
-//    val rus = greet("ru")
-//    println(rus())
-//
-//    val esp = greet("es")
-//    println(esp())
-//
-//    val eng = greet("en")
-//    println(eng())
-//
-//    val fra = greet("fr")
-//    println(fra())
-//
-//    val ita = greet("ita")
-//    println(ita())
+    val rus = greet("ru")
+    println(rus())
+
+    val esp = greet("es")
+    println(esp())
+
+    val eng = greet("en")
+    println(eng())
+
+    val fra = greet("fr")
+    println(fra())
+
+    val ita = greet("ita")
+    println(ita())
 
 }
 fun greet(language: String): () -> String {
