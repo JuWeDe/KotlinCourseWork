@@ -122,7 +122,7 @@ suspend fun main(args: Array<String>) {
         expectSuccess = true
     }
 
-//    1st method
+//    1st method for CW
     runBlocking {
         val deferredImages = urls.map { url ->
             async {
@@ -149,7 +149,7 @@ suspend fun main(args: Array<String>) {
 
     jobs.forEach { it.join() }
     client.close()
-//    3rd method functional
+//   3rd method functional
 
     runBlocking {
         urls.map {
@@ -183,8 +183,25 @@ suspend fun main(args: Array<String>) {
 
     val ita = greet("ita")
     println(ita())
+// second method for CW
+    runBlocking {
+        urls.map { url ->
+            async {
+                val imageBytes = client.get(url).body<ByteArray>()
+                saveImageToFile(url, imageBytes)
+            }
+        }.awaitAll()
+    }
+    client.close()
 
 }
+
+fun saveImageToFile(url: String, imageBytes: ByteArray) {
+    val filename = url.substringAfterLast("/")
+    val file = File("ImagesWithOldNames/${if (filename.endsWith(".jpg")) filename else filename + ".jpg"}")
+    file.writeBytes(imageBytes)
+}
+
 
 fun greet(language: String): () -> String {
     return when (language) {
