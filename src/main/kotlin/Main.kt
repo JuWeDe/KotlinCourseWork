@@ -135,7 +135,7 @@ suspend fun main(args: Array<String>) {
             File("ImagesWithNewNames/image${index + 1}.jpg").writeBytes(image)
         }
     }
-//    2nd method
+//    2nd method nonfunctional
     val jobs = mutableListOf<Job>()
 
     urls.forEach { url ->
@@ -149,8 +149,17 @@ suspend fun main(args: Array<String>) {
 
     jobs.forEach { it.join() }
     client.close()
+//    3rd method functional
 
-
+    runBlocking {
+        urls.map {
+            async {
+                val imageData = client.get(it).body<ByteArray>()
+                val fileName = it.substringAfterLast('/')
+                File("ImagesWithOldNamesFunc/$fileName.jpg").writeBytes(imageData)
+            }
+        }.awaitAll()
+    }
     val sum = operateOnNumbers(10, 5) { x, y -> x + y }
     val multiply = operateOnNumbers(5, 2) { x, y -> x * y }
     val difference = operateOnNumbers(50, 30) { x, y -> x - y }
@@ -176,16 +185,32 @@ suspend fun main(args: Array<String>) {
     println(ita())
 
 }
+
 fun greet(language: String): () -> String {
     return when (language) {
-        "en" -> { {  "Hello"  } }
-        "fr" -> { {  "Bonjour"  } }
-        "es" -> { {  "Hola" } }
-        "ru" -> { {  "Привет" } }
-        else -> { {  "Unsupported language"  } }
+        "en" -> {
+            { "Hello" }
+        }
+
+        "fr" -> {
+            { "Bonjour" }
+        }
+
+        "es" -> {
+            { "Hola" }
+        }
+
+        "ru" -> {
+            { "Привет" }
+        }
+
+        else -> {
+            { "Unsupported language" }
+        }
 
     }
 }
+
 fun operateOnNumbers(a: Int, b: Int, operation: (Int, Int) -> Int): Int {
     return operation(a, b)
 }
